@@ -63,5 +63,64 @@ docker exec jenkins-blueocean ls a/var/jenkins_home
 ```
 Important folders are nodes, plugins, workspace, users, updates, secrets etc...
 
-# Reference
+## Executing python script from build
+```
+Dashboard->New item->Freestyle project
+Source code management->Git (provide public git repo URL)
+Build steps->Execute shell and enter below
+python3 hello_world.py
+```
+
+## Configure Cloud agent (Docker)
+
+Dashboard->Manage Jenkins->Cloud->Plugins and select Docker then Install
+
+Restart Jenkins when installation is complete
+
+### alpine/socat container to forward traffic from Jenkins to Docker Desktop on Host Machine
+
+```
+docker run -d --restart=always -p 127.0.0.1:2376:2375 --network jenkins -v /var/run/docker.sock:/var/run/docker.sock alpine/socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+docker ps -n 1 --format "{{.ID}}"
+docker inspect <container id from above step> 
+```
+
+Save the IPAddress from last command
+
+Dashboard->Manage Jenkins->Cloud->New cloud->Docker cloud details
+
+Enter below value into Docker Host URI
+```
+tcp://<IPADDRESS VALUE>:2375
+```
+Test Connection to verify if the connection is fine and then hit save
+
+## Docker Agent template
+
+Dashboard->Manage Jenkins->Cloud->docker->Configure->Docker Agent templates->Add Docker Template
+
+Labels=docker-agent-alpine
+
+Enabled=Selected
+
+Name=docker-agent-alpine
+
+Docker Image=jenkins/agent:alpine-jdk17
+
+Instance capacity=2
+
+Remote File System=/home/jenkins
+
+Then click save
+
+## Running configured job with selected agent
+Dashboard->build project->configuration->Restrict where this project can be run
+Enter labels of the desired agent
+Save
+
+
+
+# References
 https://github.com/devopsjourney1/jenkins-101
+
+https://stackoverflow.com/questions/47709208/how-to-find-docker-host-uri-to-be-used-in-jenkins-docker-plugin
