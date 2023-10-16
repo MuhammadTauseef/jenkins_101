@@ -131,6 +131,7 @@ USER jenkins
 
 Build the iamge and push it to dockerhub
 ```
+cd pythonDockerImage
 docker build -t myjenkinsagents:python .
 docker tag myjenkinsagents <USER_ID>/myjenkinsagents:python
 docker login -u "<USER_ID>" --password-stdin docker.io
