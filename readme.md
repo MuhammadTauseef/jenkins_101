@@ -161,7 +161,15 @@ Copy sample script from jenkinsfile.template to Pipeline->Script
 
 change the label
 
-## Jenkinsfile
+## Create pipeline using Jenkinsfile
+In the previous declarative pipeline using Groovy project, remove Pipeline->Script
+
+Select Pipeline->Definition->Pipeline script from SCM
+
+Pipeline->SCM->Git
+
+Pipeline->SCM->Repository URL=ENTER URL OF GIT REPO HERE
+
 
 
 # References
