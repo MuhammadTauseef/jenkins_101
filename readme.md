@@ -118,7 +118,33 @@ Dashboard->build project->configuration->Restrict where this project can be run
 Enter labels of the desired agent
 Save
 
+### Running python agent
 
+create Dockerfile
+```
+FROM jenkins/agent:alpine-jdk17
+USER root
+RUN apk add python3
+RUN apk add py3-pip
+USER jenkins
+```
+
+Build the iamge and push it to dockerhub
+```
+docker build -t myjenkinsagents:python .
+docker tag myjenkinsagents <USER_ID>/myjenkinsagents:python
+docker login -u "<USER_ID>" --password-stdin docker.io
+docker push <USER_ID>/myjenkinsagents:python
+```
+
+#### Define another docker agent tempalte with following difference
+Labels=docker-agent-python
+
+Name=docker-agent-python
+
+Docker Image=<USER_ID>/myjenkinsagents:python
+
+Update python build project to restrict to use docker-agent-python label
 
 # References
 https://github.com/devopsjourney1/jenkins-101
