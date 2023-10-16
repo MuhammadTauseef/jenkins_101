@@ -131,6 +131,7 @@ USER jenkins
 
 Build the iamge and push it to dockerhub
 ```
+cd pythonDockerImage
 docker build -t myjenkinsagents:python .
 docker tag myjenkinsagents <USER_ID>/myjenkinsagents:python
 docker login -u "<USER_ID>" --password-stdin docker.io
@@ -145,6 +146,20 @@ Name=docker-agent-python
 Docker Image=<USER_ID>/myjenkinsagents:python
 
 Update python build project to restrict to use docker-agent-python label
+
+## Poll SCM to trigger build job
+Dashboard->build project->configuration->Build Triggers->Poll SCM
+
+enter schedule */5 * * * *
+
+Build will be triggered if there is some change on the github. Jenkins will build after every 5 minutes if there is any change on the SCM
+
+## Jenkins declarative pipeline using Groovy
+Dashboard->New item->Pipeline
+
+Copy sample script from jenkinsfile.template to Pipeline->Script
+
+change the label
 
 # References
 https://github.com/devopsjourney1/jenkins-101
