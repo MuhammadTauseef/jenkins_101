@@ -172,9 +172,14 @@ Pipeline->SCM->Repository URL=ENTER URL OF GIT REPO HERE
 
 ## Project Dockerfile automation
 
-Poll SCM for changes then download code and build image, push image and deplopy locally.
+Poll SCM for changes then download Dockerfile and build image, push image and deplopy locally.
 
-code is placed in Dockerfile_Automation folder
+While creating pipeline select Github Project and enter URL of repository. 
+
+Under Build triggers select Poll SCM and enter schedule H/5 * * * *
+This will trigger after every five minutes.
+
+Under pipeline, select Pipeline script from SCM then select Git from SCM drop down. Enter Repo URL Select Script relative path to Dockerfile_Automation/Jenkinsfile
 
 # References
 https://github.com/devopsjourney1/jenkins-101
