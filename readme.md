@@ -170,7 +170,11 @@ Pipeline->SCM->Git
 
 Pipeline->SCM->Repository URL=ENTER URL OF GIT REPO HERE
 
+## Project Dockerfile automation
 
+Poll SCM for changes then download code and build image, push image and deplopy locally.
+
+code is placed in Dockerfile_Automation folder
 
 # References
 https://github.com/devopsjourney1/jenkins-101
