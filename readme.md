@@ -1,4 +1,4 @@
-# Installation on Windows 10
+# Jenkins Installation on Windows 10
 
 ## Docker installation on windows step by step guide
 https://www.youtube.com/watch?v=aCRMnDLnWmU
