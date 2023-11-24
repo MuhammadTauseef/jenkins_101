@@ -7,7 +7,10 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
 
-  }    
+  } 
+    triggers {
+    pollSCM 'H/5 * * * *'
+  }   
     stages {
         stage('Git clone') {
             steps {
