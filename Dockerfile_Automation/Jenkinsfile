@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+
+  }    
+    stages {
+        stage('Git clone') {
+            steps {
+                echo 'Starting clone stage'
+                cleanWs()
+                sh '''
+                    git clone https://github.com/MuhammadTauseef/jenkins_101.git
+                '''
+                echo 'Stopped clone stage'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo 'Starting Build stage'
+                sh '''
+                    cd jenkins_101/Dockerfile_Automation
+                    docker build . -t complexnumber/dockerfile_automation
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                    docker push complexnumber/dockerfile_automation
+                    
+                '''
+                echo 'Stopped Build stage'
+            }
+        }
+        
+        stage('Deploy our image') {
+            steps{
+                echo 'Starting Deploy stage'
+                sh '''
+                cd jenkins_101/Dockerfile_Automation
+                
+                docker stop dockerfile_automate || true && docker rm dockerfile_automate || true
+                docker pull  complexnumber/dockerfile_automation
+                docker run -d --name dockerfile_automate -p 8081:80  complexnumber/dockerfile_automation
+                '''
+                echo 'Stopped Deploy stage'
+                }
+            }
+        stage('Test') {
+            steps{
+                echo 'Starting Test stage'
+                sh '''
+                curl http://localhost:8081 | grep -i Tauseef
+                '''
+                echo 'Stopped Test stage'
+                }
+            }
+}
+    }
