@@ -51,7 +51,7 @@ pipeline {
             steps{
                 echo 'Starting Test stage'
                 sh '''
-                curl http://localhost:8081 | grep -i Tauseef
+                curl http://localhost:8081 | grep -i tauseef
                 '''
                 echo 'Stopped Test stage'
                 }
